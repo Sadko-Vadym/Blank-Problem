@@ -1,0 +1,16 @@
+Thank you for installing {{ .Chart.Name }}!
+
+Your release is named {{ .Release.Name }}.
+
+To check the status of your deployment:
+  kubectl get deployments -l "app.kubernetes.io/instance={{ .Release.Name }}"
+
+To check the pods:
+  kubectl get pods -l "app.kubernetes.io/instance={{ .Release.Name }}"
+
+To view the logs:
+  kubectl logs -l "app.kubernetes.io/instance={{ .Release.Name }}"
+
+NOTE: Make sure you have set the TELE_TOKEN secret value during installation:
+  helm install {{ .Release.Name }} <chart> --set secret.teleToken=<your-telegram-token>
+

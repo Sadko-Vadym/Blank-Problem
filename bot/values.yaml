@@ -1,0 +1,39 @@
+# Default values for bot.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/sadko-vadym
+  tag: v1.0.0
+  arch: amd64
+
+# Telegram Bot Token
+# This should be overridden during installation
+secret:
+  teleToken: ""
+
+# Service account settings
+serviceAccount:
+  create: true
+  name: ""
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Node selector for pod assignment
+nodeSelector: {}
+
+# Tolerations for pod assignment
+tolerations: []
+
+# Affinity for pod assignment
+affinity: {}
+
