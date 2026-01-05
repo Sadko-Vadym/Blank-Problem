@@ -12,7 +12,7 @@ image:
 # Telegram Bot Token
 # This should be overridden during installation
 secret:
-  teleToken: ""
+  TELE_TOKEN: ""
 
 # Service account settings
 serviceAccount:
