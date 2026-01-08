@@ -7,7 +7,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  REPOSITORY: ${{ github.repository_owner }}/blank-problem
   TARGETOS: linux
   TARGETARCH: amd64
 
@@ -40,11 +39,13 @@ jobs:
           VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
           COMMIT=$(git rev-parse --short HEAD)
           IMAGE_TAG="${VERSION}-${COMMIT}"
-          FULL_IMAGE="${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${IMAGE_TAG}-${{ env.TARGETOS }}-${{ env.TARGETARCH }}"
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          FULL_IMAGE="${{ env.REGISTRY }}/${REPO_LOWER}:${IMAGE_TAG}-${{ env.TARGETOS }}-${{ env.TARGETARCH }}"
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "commit=${COMMIT}" >> $GITHUB_OUTPUT
           echo "image_tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
           echo "full_image=${FULL_IMAGE}" >> $GITHUB_OUTPUT
+          echo "repo_lower=${REPO_LOWER}" >> $GITHUB_OUTPUT
           echo "Building image: ${FULL_IMAGE}"
 
       - name: Download dependencies
@@ -78,6 +79,7 @@ jobs:
 
       - name: Update Helm chart values
         run: |
+          sed -i 's|repository:.*|repository: "${{ steps.vars.outputs.repo_lower }}"|' bot/values.yaml
           sed -i 's|tag:.*|tag: "${{ steps.vars.outputs.image_tag }}"|' bot/values.yaml
           sed -i 's|os:.*|os: ${{ env.TARGETOS }}|' bot/values.yaml
           sed -i 's|arch:.*|arch: ${{ env.TARGETARCH }}|' bot/values.yaml
