@@ -86,12 +86,14 @@ jobs:
           cat bot/values.yaml
 
       - name: Commit and push Helm chart update
+        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add bot/values.yaml
           git diff --staged --quiet || git commit -m "chore: update helm chart to ${{ steps.vars.outputs.image_tag }}"
-          git push origin develop || echo "Push failed, may need to pull first"
+          git pull origin develop --rebase || true
+          git push origin develop
 
       - name: Print image URL
         run: |
