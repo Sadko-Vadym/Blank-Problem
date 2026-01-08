@@ -5,8 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: "ghcr.io/sadko-vadym/blank-problem"
-  tag: "v1.0.0"
+  registry: "ghcr.io"
+  repository: "sadko-vadym/blank-problem"
+  tag: "v1.0.0-fa1ae8c"
   os: linux
   arch: amd64
 

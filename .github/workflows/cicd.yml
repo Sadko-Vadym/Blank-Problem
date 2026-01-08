@@ -79,7 +79,9 @@ jobs:
 
       - name: Update Helm chart values
         run: |
-          sed -i 's|repository:.*|repository: "${{ steps.vars.outputs.repo_lower }}"|' bot/values.yaml
+          REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          sed -i 's|registry:.*|registry: "${{ env.REGISTRY }}"|' bot/values.yaml
+          sed -i 's|repository:.*|repository: "'${REPO_NAME}'"|' bot/values.yaml
           sed -i 's|tag:.*|tag: "${{ steps.vars.outputs.image_tag }}"|' bot/values.yaml
           sed -i 's|os:.*|os: ${{ env.TARGETOS }}|' bot/values.yaml
           sed -i 's|arch:.*|arch: ${{ env.TARGETARCH }}|' bot/values.yaml
