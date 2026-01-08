@@ -49,8 +49,8 @@ jobs:
 
       - name: Download dependencies
         run: |
-          go mod download
           go mod tidy
+          go mod download
 
       - name: Build binary
         run: |
